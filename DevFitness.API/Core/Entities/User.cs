@@ -16,13 +16,19 @@ namespace DevFitness.API.Core.Entities
         }
 
         public string FullName { get; private set; }
-        
+
         public decimal Height { get; private set; }
-        
+
         public decimal Weight { get; private set; }
-        
+
         public DateTime BirthDate { get; private set; }
 
         public IEnumerable<Meal> Meals { get; private set; }
+
+        public void Update(decimal height, decimal weight)
+        {
+            Weight = weight;
+            Height = height;
+        }
     }
 }
