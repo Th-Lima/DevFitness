@@ -1,4 +1,5 @@
 using DevFitness.API.Persistence;
+using DevFitness.API.Profiles;
 using DevFitness.API.Repositories;
 using DevFitness.API.Repositories.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -23,6 +24,10 @@ namespace DevFitness.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //AutoMapper
+            services.AddAutoMapper(typeof(UserProfile));
+            services.AddAutoMapper(typeof(MealProfile));
+
             var connectionString = Configuration.GetConnectionString("DevFitnessCs");
 
             services.AddDbContext<DevFitnessDbContext>(options =>

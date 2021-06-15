@@ -1,4 +1,5 @@
-﻿using DevFitness.API.Core.Entities;
+﻿using AutoMapper;
+using DevFitness.API.Core.Entities;
 using DevFitness.API.Models.InputModels;
 using DevFitness.API.Models.ViewModels;
 using DevFitness.API.Repositories.Contracts;
@@ -11,10 +12,12 @@ namespace DevFitness.API.Controllers
     public class MealsController : ControllerBase
     {
         private readonly IMealRepository _mealRepository;
+        private readonly IMapper _mapper;
 
-        public MealsController(IMealRepository mealRepository)
+        public MealsController(IMealRepository mealRepository, IMapper mapper)
         {
             _mealRepository = mealRepository;
+            _mapper = mapper;
         }
 
         // api/user/4/meals HTTP GET
@@ -28,10 +31,10 @@ namespace DevFitness.API.Controllers
                 return NotFound("NENHUM ALIMENTO ENCONTRADO!");
             }
 
-            var allMealsViewModels = allMeals
+            var allMealsViewModel = allMeals
                 .Select(m => new MealViewModel(m.Id, m.Description, m.Calories, m.Date));
 
-            return Ok(allMealsViewModels);
+            return Ok(allMealsViewModel);
         }
 
         // api/user/4/meals/16 HTTP GET
@@ -43,7 +46,7 @@ namespace DevFitness.API.Controllers
             if (meal == null)
                 return NotFound("NENHUM ALIMENTO ENCONTRADO!");
 
-            var mealViewModel = new MealViewModel(meal.Id, meal.Description, meal.Calories, meal.Date);
+            var mealViewModel = _mapper.Map<MealViewModel>(meal);
 
             return Ok(mealViewModel);
         }

@@ -1,4 +1,5 @@
-﻿using DevFitness.API.Core.Entities;
+﻿using AutoMapper;
+using DevFitness.API.Core.Entities;
 using DevFitness.API.Models.InputModels;
 using DevFitness.API.Models.ViewModels;
 using DevFitness.API.Repositories.Contracts;
@@ -9,11 +10,13 @@ namespace DevFitness.API.Controllers
     [Route("api/[controller]")]
     public class UsersController : ControllerBase
     {
-        private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -26,7 +29,7 @@ namespace DevFitness.API.Controllers
                 return NotFound("NENHUM USUÁRIO ENCONTRADO!");
             }
 
-            var userViewModel = new UserViewModel(user.Id, user.FullName, user.Height, user.Weight, user.BirthDate);
+            var userViewModel = _mapper.Map<UserViewModel>(user);
 
             return Ok(userViewModel);
         }
@@ -34,7 +37,7 @@ namespace DevFitness.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] CreateUserInputModel inputModel)
         {
-            var user = new User(inputModel.FullName, inputModel.Height, inputModel.Weight, inputModel.BirthDate);
+            var user = _mapper.Map<User>(inputModel);
 
             _userRepository.Create(user);
 
