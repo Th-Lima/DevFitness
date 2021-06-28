@@ -5,8 +5,6 @@ namespace DevFitness.API.Repositories.Contracts
 {
     public interface IUserRepository
     {
-        // CRUD
-
         public User Get(int id);
 
         public void Create(User user);

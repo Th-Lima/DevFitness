@@ -6,8 +6,6 @@ namespace DevFitness.API.Repositories.Contracts
 {
     public interface IMealRepository
     {
-        //CRUD
-
         public void Create(Meal meal);
 
         public IList<Meal> GetAll(int userId);
